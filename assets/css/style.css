@@ -1,36 +1,68 @@
-.card {
-    margin-bottom: 20px;
+body {
+    background-color: rgb(180, 174, 166);
 }
 
-.card-header {
+.timeline-with {
+    margin: 20px;
+    position: relative;
+    border-left: 2px solid #d8dcd8;
+    list-style: none;
+    left: 10%;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+}
+
+.timeline-icon::before {
+    position: absolute;
+    left: -40px;
+    content: attr(data-range);
+    font-weight: bold;
+}
+
+.timeline-icon {
+    position: absolute;
+    left: -45px;
+    background: rgb(238, 230, 5);
+    border-radius: 50%;
+    width: 21px;
+    height: 20px;
+}
+
+.card {
+    width: calc(33.33% - 20px);
+    margin-bottom: 10px;
+}
+
+.container {
+    display: flex;
+    flex-direction: column;
+}
+
+.empty-card {
+    height: 100%;
+}
+
+.empty-card-inner {
+    height: 100%;
+    border: 1px dashed #aaa;
     background-color: #f8f9fa;
 }
 
-.card-body {
-    background-color: #fff;
-}
-
-.list-group-item {
-    display: flex;
-    align-items: center;
-}
-
 .circle {
-    display: inline-block;
     width: 20px;
     height: 20px;
     border-radius: 50%;
-    margin-right: 10px;
+    display: inline-block;
 }
 
-.red {
-    background-color: red;
+.red-circle {
+    background-color: rgba(239, 41, 19, 0.994);
+}
+.green-circle {
+    background-color: #52c322d8;
 }
 
-.green {
-    background-color: green;
-}
-
-.blue {
-    background-color: blue;
+.blue-circle {
+    background-color: rgba(14, 14, 227, 0.855);
 }

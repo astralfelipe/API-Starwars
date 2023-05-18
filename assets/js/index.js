@@ -91,3 +91,6 @@ $(document).ready(function () {
     populateCard('card2', generator2());
     populateCard('card3', generator3());
 });
+
+
+
