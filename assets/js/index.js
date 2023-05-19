@@ -1,96 +1,79 @@
+//Función constructora
 class Persona {
-    constructor(nombre, altura, peso) {
-        this.nombre = nombre;
-        this.altura = altura;
-        this.peso = peso;
-    }
+  constructor(nombre, altura, peso) {
+    this.nombre = nombre;
+    this.altura = altura;
+    this.peso = peso;
+  }
 }
 
-const getPersonaje = (id) => {
-    return new Promise(async (resolve, reject) => {
-        try {
-            let url = "https://swapi.dev/api/people/" + id;
-            let response = await fetch(url);
-            let data = await response.json();
-            let { name, height, mass } = data;
-            let nuevoPersonaje = new Persona(name, height, mass);
-            resolve(nuevoPersonaje);
-        } catch (error) {
-            reject();
-        }
-    });
-};
-
-function* generator1() {
-    yield getPersonaje(1);
-    yield getPersonaje(2);
-    yield getPersonaje(3);
-    yield getPersonaje(4);
-    yield getPersonaje(5);
+//Función generadora con método fetch para invocar a la API
+async function* generator(desde, hasta) {
+  let i = desde;
+  while (i <= hasta) {
+    let url = "https://swapi.dev/api/people/" + i;
+    let response = await fetch(url);
+    let data = await response.json();
+    let { name, height, mass } = data;
+    let nuevoPersonaje = new Persona(name, height, mass);
+    yield nuevoPersonaje;
+    i++;
+  }
 }
 
-function* generator2() {
-    yield getPersonaje(6);
-    yield getPersonaje(7);
-    yield getPersonaje(8);
-    yield getPersonaje(9);
-    yield getPersonaje(10);
+//Invocación a los generadores
+const firstGenerator = generator(1, 5);
+const secondGenerator = generator(6, 11);
+const thirdGenerator = generator(12, 16);
+
+//Método Switch para obtener los resultados
+async function typeGenerator(id) {
+  switch (id) {
+    case "first":
+      const first = await firstGenerator.next();
+      return first;
+    case "second":
+      const second = await secondGenerator.next();
+      return second;
+    case "third":
+      const third = await thirdGenerator.next();
+      return third;
+  }
 }
 
-function* generator3() {
-    yield getPersonaje(11);
-    yield getPersonaje(12);
-    yield getPersonaje(13);
-    yield getPersonaje(14);
-    yield getPersonaje(15);
+//Función populateCard para generar la card con los datos de los personajes
+async function populateCard(id) {
+  const {value,done} = await typeGenerator(id)
+  let div = document.getElementById(id);
+  console.log(div);
+  if (!done) {
+    let html = div.innerHTML;
+    html += `
+    <div class="card shadow-lg p-3 mb-5 bg-body rounded">
+    <span class="circle" data-range="1-5"></span>
+    <div class="d-flex">
+        <span class="${id}-circle"></span>
+        <h5>Altura: ${value.altura}</h5>
+        <h5>Nombre: ${value.nombre}</h5>
+        <h5>Peso: ${value.peso}</h5>
+  </div>
+    `;
+    div.innerHTML = html;
+  }
 }
 
-function populateCard(cardId, generator) {
-    let cardResults = $(`#${cardId}Results`);
-    cardResults.empty();
-
-    function handleClick() {
-        let resultado = generator.next();
-        if (resultado.done) {
-            console.log("El generador ha terminado");
-        } else {
-            resultado.value
-                .then((personaje) => {
-                    console.log(personaje);
-                    let listItem = `<li class="list-group-item">
-                                        <div class="circle ${getColorClass(cardId)}"></div>
-                                        <div>${personaje.nombre} - Altura: ${personaje.altura}, Peso: ${personaje.peso}</div>
-                                    </li>`;
-                    cardResults.append(listItem);
-                    handleClick();
-                })
-                .catch((error) => {
-                    console.log("Error al consultar el personaje");
-                });
-        }
-    }
-
-    handleClick();
-}
-
-function getColorClass(cardId) {
-    switch (cardId) {
-        case 'card1':
-            return 'red';
-        case 'card2':
-            return 'green';
-        case 'card3':
-            return 'blue';
-        default:
-            return '';
-    }
-}
-
-$(document).ready(function () {
-    populateCard('card1', generator1());
-    populateCard('card2', generator2());
-    populateCard('card3', generator3());
+//Evento onclick para que cada vez que se haga click arroje los datos de la API solicitados
+let first = document.getElementById("first");
+let second = document.getElementById("second");
+let third = document.getElementById("third");
+first.addEventListener("click", (e) => {
+  populateCard(first.id);
 });
 
+second.addEventListener("click", (e) => {
+  populateCard(second.id);
+});
 
-
+third.addEventListener("click", (e) => {
+  populateCard(third.id);
+});
