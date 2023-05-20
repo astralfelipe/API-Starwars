@@ -4,7 +4,9 @@ body {
 
 h1 {
     text-align: center;
+    transition: color 1s;
 }
+
 
 .timeline-with {
     margin: 20px;
@@ -79,6 +81,10 @@ h1 {
     height: 10px;
     border-radius: 100%;
     background-color: rgba(14, 14, 227, 0.855);
+}
+
+.red-title {
+    color: crimson;
 }
 
 /* Se hacen modificaciones al CSS: se eliminan unas propiedades de flex y se agregan

@@ -77,3 +77,11 @@ second.addEventListener("click", (e) => {
 third.addEventListener("click", (e) => {
   populateCard(third.id);
 });
+
+
+// jQuery - Titulo cambia de color negro a escarlata cuando se hace click
+$(document).ready(function () {
+  $("#main-title").click(function () {
+      $(this).toggleClass("red-title");
+  });
+});
